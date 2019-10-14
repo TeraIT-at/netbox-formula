@@ -29,7 +29,7 @@ netbox_configure_apache_vhost:
 netbox_install_apache_modules:
   pkg.installed:
     - pkgs:
-      {% for pkg in netbox.webserver.dependencies -%}
+      {% for pkg in netbox.webserver.apache.dependencies -%}
       - {{ pkg }}
       {% endfor %}
     - watch_in:

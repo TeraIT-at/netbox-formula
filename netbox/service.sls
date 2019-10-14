@@ -111,7 +111,7 @@ install_gunicorn_netbox:
 configure_gunicorn_netbox:
   file.managed:
   - name: {{ netbox.service.homedir }}/gunicorn_config.py
-  - source: salt://{{ tpldir }}/files/gunicorn_config.py #todo update path
+  - source: salt://{{ tpldir }}/files/gunicorn_config.py
   - user: {{ netbox.service.user }}
   - group: {{ netbox.service.group }}
   - context:
