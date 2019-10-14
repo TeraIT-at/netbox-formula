@@ -17,7 +17,7 @@ netbox_service_apache_running:
 
 netbox_configure_apache_vhost:
   file.managed:
-  - name: {{ netbox.webserver.apache.sites-available }}/netbox.conf
+  - name: {{ netbox.webserver.apache.sites_available }}/netbox.conf
   - source: salt://{{ tpldir }}/files/apache-config
   - context:
     tpldir: {{ tpldir }}
