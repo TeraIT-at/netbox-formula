@@ -30,8 +30,14 @@ Debian:
     - libpq-dev
   database:
     service: postgresql
-  web:
+  webserver:
     apache:
+      pkg: apache2
+      dependencies:
+        - libapache2-mod-wsgi
+        - libapache2-mod-wsgi-py3
+      service: apache2
+      sites-available: /etc/apache2/sites-available/
       user: www-data
     nginx:
       user: www-data

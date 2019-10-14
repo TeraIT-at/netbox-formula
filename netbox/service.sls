@@ -87,6 +87,7 @@ setup_netbox_link_graphviz_to_venv:
     - require:
         - configure_netbox
         - setup_netbox_virtualenv
+        - install_netbox_dependencies
 
 restart_netbox_app:
   supervisord.running:

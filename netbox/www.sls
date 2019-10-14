@@ -6,18 +6,18 @@ include:
 netbox_install_apache:
   pkg.installed:
     - pkgs:
-      - apache2
+      - {{ netbox.webserver.apache.pkg }}
 
 netbox_service_apache_running:
   service.running:
-    - name: apache2
+    - name: {{ netbox.webserver.apache.service }}
     - enable: true
     - require:
       - pkg: netbox_install_apache
 
 netbox_configure_apache_vhost:
   file.managed:
-  - name: /etc/apache2/sites-available/netbox.conf
+  - name: {{ netbox.webserver.apache.sites-available }}/netbox.conf
   - source: salt://{{ tpldir }}/files/apache-config
   - context:
     tpldir: {{ tpldir }}
@@ -29,7 +29,9 @@ netbox_configure_apache_vhost:
 netbox_install_apache_modules:
   pkg.installed:
     - pkgs:
-      - libapache2-mod-wsgi
+      {% for pkg in netbox.webserver.dependencies -%}
+      - {{ pkg }}
+      {% endfor %}
     - watch_in:
       - service: netbox_service_apache_running
 
