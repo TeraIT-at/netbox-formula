@@ -3,7 +3,10 @@ netbox:
     group: app-netbox
     user: app-netbox
     homedir: /opt/netbox/
-    config:
+    gunicorn:
+      bind: "127.0.0.1:8001"
+      workers: 3
+    config: #Configuration Options as per https://netbox.readthedocs.io/en/stable/configuration/
       ALLOWED_HOSTS: []
       DATABASE:
         NAME: "netbox"
