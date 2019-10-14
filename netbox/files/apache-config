@@ -20,6 +20,7 @@
         ProxyPass !
     </Location>
 
-    ProxyPass / http://127.0.0.1:8001/
-    ProxyPassReverse / http://127.0.0.1:8001/
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+    ProxyPass / http://{{ netbox.service.gunicorn.workers }}/
+    ProxyPassReverse / http://{{ netbox.service.gunicorn.workers }}/
 </VirtualHost>

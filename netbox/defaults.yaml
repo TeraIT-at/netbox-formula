@@ -6,6 +6,9 @@ netbox:
     group: app-netbox
     user: app-netbox
     homedir: /opt/netbox/
+    gunicorn:
+      bind: "127.0.0.1:8001"
+      workers: 3
     config:
       ALLOWED_HOSTS: []
       DATABASE:
