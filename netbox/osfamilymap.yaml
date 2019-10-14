@@ -1,0 +1,70 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Setup variables using grains['os_family'] based logic.
+# You just need to add the key:values for an `os_family` that differ
+# from `defaults.yaml`.
+# Only add an `os_family` which is/will be supported by the formula
+#
+# If you do not need to provide defaults via the `os_family` grain,
+# you will need to provide at least an empty dict in this file, e.g.
+# osfamilymap: {}
+---
+Debian:
+  service_dependencies:
+    - python3
+    - python3-pip
+    - python3-dev
+    - build-essential
+    - libxml2-dev
+    - libxslt1-dev
+    - libffi-dev
+    - graphviz
+    - libpq-dev
+    - libssl-dev
+    - redis-server
+    - zlib1g-dev
+    - git
+  database_dependencies:
+    - postgresql
+    - libpq-dev
+  database:
+    service: postgresql
+  web:
+    apache:
+      user: www-data
+    nginx:
+      user: www-data
+  supervisor:
+    package: supervisor
+
+
+CentOS:
+  service_dependencies:
+    - epel-release
+    - gcc
+    - python36
+    - python36-devel
+    - python36-setuptools
+    - libxml2-devel
+    - libxslt-devel
+    - libffi-devel
+    - graphviz
+    - openssl-devel
+    - redhat-rpm-config
+    - redis
+    - git
+  web:
+    apache:
+      user: apache
+    nginx:
+      user: nginx
+
+
+openSUSE: {}
+
+
+Gentoo: {}
+
+
+Arch: {}

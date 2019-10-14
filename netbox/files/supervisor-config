@@ -1,0 +1,12 @@
+{% from "netbox/map.jinja" import netbox with context %}
+[program:netbox]
+command = {{ netbox.service.homedir }}/bin/gunicorn -c {{ netbox.service.homedir }}/gunicorn_config.py netbox.wsgi
+directory = {{ netbox.service.homedir }}/netbox/
+environment=PATH="{{ netbox.service.homedir }}/bin"
+user = {{ netbox.service.user }}
+
+[program:netbox-rqworker]
+command = python3 /opt/netbox/netbox/manage.py rqworker
+directory = /opt/netbox/netbox/
+environment=PATH="/opt/netbox/bin"
+user = {{ netbox.service.user }}
