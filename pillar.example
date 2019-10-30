@@ -64,7 +64,7 @@ netbox:
       SHORT_TIME_FORMAT: 'H:i:s'
       DATETIME_FORMAT: 'N j, Y g:i a'
       SHORT_DATETIME_FORMAT: 'Y-m-d H:i'
-  datebase:
+  database:
     db_name: "netbox"
     username: "netbox"
     password: ""
