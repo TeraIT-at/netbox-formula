@@ -5,12 +5,12 @@
 
     ServerName {{ netbox.webserver.servername }}
 
-    Alias /static {{ netbox.service.homedir }}/netbox/static
+    Alias /static {{ netbox.service.homedir }}/app/netbox/static
 
     # Needed to allow token-based API authentication
     WSGIPassAuthorization on
 
-    <Directory {{ netbox.service.homedir }}/netbox/static>
+    <Directory {{ netbox.service.homedir }}/app/netbox/static>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted

@@ -10,6 +10,8 @@ Install and configure `Netbox (an IPAM and DCIM tool).
 
 .. contents:: **Table of Contents**
 
+Currently only Ubuntu & Debian is tested
+
 General notes
 -------------
 
@@ -34,17 +36,38 @@ Available states
 ``netbox.service``
 ^^^^^^^^^^^^^^^^
 
+
 Setup and configure the Netbox Service in a Python Virtualenv, managed by Supervisord
 
-``netbox.www``
+``netbox.www.apache``
 ^^^^^^^^^^^^^^^^
 
 Install and configure Apache2 as reverse proxy to Netbox
+
+``netbox.www.nginx``
+^^^^^^^^^^^^^^^^
+
+Install and configure nginx as reverse proxy to Netbox
 
 ``netbox.db``
 ^^^^^^^^^^^^^^^^
 
 Install Postgres and setup a database + user for Netbox
+
+``netbox.redis``
+^^^^^^^^^^^^^^^^
+
+Install Redis-Server
+
+``netbox.optional.napalm``
+^^^^^^^^^^^^^^^^
+
+Installs the napalm driver 
+
+``netbox.optional.rfs`
+^^^^^^^^^^^^^^^^
+
+Installs packages for remote-file-storage capability
 
 ``netbox.autoupgrade``
 ^^^^^^^^^^^^^^^^

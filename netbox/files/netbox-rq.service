@@ -1,0 +1,23 @@
+{% from "netbox/map.jinja" import netbox with context %}
+[Unit]
+Description=NetBox Request Queue Worker
+Documentation=https://netbox.readthedocs.io/en/stable/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+User={{ netbox.service.user }}
+Group={{ netbox.service.group }}
+
+WorkingDirectory={{ netbox.service.homedir }}/app
+
+ExecStart={{ netbox.service.homedir }}/venv/bin/python3 {{ netbox.service.homedir }}/app/netbox/manage.py rqworker
+
+Restart=on-failure
+RestartSec=30
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

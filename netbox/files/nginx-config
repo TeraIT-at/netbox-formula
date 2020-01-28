@@ -1,0 +1,20 @@
+{% from "netbox/map.jinja" import netbox with context %}
+
+server {
+    listen 80;
+
+    server_name {{ netbox.webserver.servername }}
+
+    client_max_body_size 25m;
+
+    location /static/ {
+        alias {{ netbox.service.homedir }}/app/netbox/static/;
+    }
+
+    location / {
+        proxy_pass http://{{ netbox.service.gunicorn.bind }};
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
