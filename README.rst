@@ -64,7 +64,7 @@ Install Redis-Server
 
 Installs the napalm driver 
 
-``netbox.optional.rfs`
+``netbox.optional.rfs``
 ^^^^^^^^^^^^^^^^
 
 Installs packages for remote-file-storage capability
