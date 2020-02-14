@@ -2,7 +2,7 @@
 # vim: ft=jinja
 
 {#- Start imports as #}
-{%- set tplroot = tpldir.split('/')[0] %}
+{% set tplroot = tpldir.split('/')[0] if not salt.pillar.get('netbox:tplroot_overwrite', False) else salt.pillar.get('netbox:tplroot_overwrite', False) %}
 {%- import_yaml tplroot ~ "/defaults.yaml" as default_settings %}
 {%- import_yaml tplroot ~ "/osfamilymap.yaml" as osfamilymap %}
 {%- import_yaml tplroot ~ "/osmap.yaml" as osmap %}

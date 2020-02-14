@@ -125,3 +125,4 @@ netbox:
   repository:
     url: https://github.com/netbox-community/netbox.git
     branch: master
+  tplroot_overwrite: None

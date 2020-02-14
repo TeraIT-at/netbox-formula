@@ -1,4 +1,4 @@
-{% from "netbox/map.jinja" import netbox with context %}
+{% from tpldir ~ "/map.jinja" import netbox with context %}
 bind = '{{ netbox.service.gunicorn.bind }}'
 workers = {{ netbox.service.gunicorn.workers }}
 user = '{{ netbox.service.user }}'

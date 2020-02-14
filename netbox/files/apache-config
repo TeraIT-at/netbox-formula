@@ -1,4 +1,4 @@
-{% from "netbox/map.jinja" import netbox with context %}
+{% from tpldir ~ "/../map.jinja" import netbox with context %}
 
 <VirtualHost *:80>
     ProxyPreserveHost On

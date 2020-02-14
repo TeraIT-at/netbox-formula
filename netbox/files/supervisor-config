@@ -1,4 +1,4 @@
-{% from "netbox/map.jinja" import netbox with context %}
+{% from tpldir ~ "/map.jinja" import netbox with context %}
 [program:netbox]
 command = {{ netbox.service.homedir }}/venv/bin/gunicorn -c {{ netbox.service.homedir }}/gunicorn_config.py netbox.wsgi
 directory = {{ netbox.service.homedir }}/app/netbox/

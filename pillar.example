@@ -122,3 +122,4 @@ netbox:
   repository:
     url: https://github.com/netbox-community/netbox.git
     branch: master
+  tplroot_overwrite: None #Used to overwrite the default root if formula is not in root directory

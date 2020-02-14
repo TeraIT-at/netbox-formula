@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import netbox with context %}
+{%- from tpldir ~ "/map.jinja" import netbox with context %}
 
 # state.sls_id state_id sls_path
 setup_netbox_load_initial_data:

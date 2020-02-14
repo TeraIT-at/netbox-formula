@@ -1,4 +1,4 @@
-{% from "netbox/map.jinja" import netbox with context %}
+{% from tpldir ~ "/map.jinja" import netbox with context %}
 [Unit]
 Description=NetBox Request Queue Worker
 Documentation=https://netbox.readthedocs.io/en/stable/
