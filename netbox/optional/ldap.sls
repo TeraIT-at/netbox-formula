@@ -18,8 +18,6 @@ install_django_ldap_netbox:
     - require:
       - file: configure_netbox
       - virtualenv: setup_netbox_virtualenv
-    - onchanges_in:
-      - netbox_app_service
 
 configure_netbox_ldap:
   file.managed:
@@ -33,4 +31,6 @@ configure_netbox_ldap:
   - mode: 600
   - require:
     - git: clone_netbox_app
+  - watch_in:
+      - service: netbox_app_service
 {%- endif %}

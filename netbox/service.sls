@@ -203,7 +203,7 @@ netbox_app_service:
     - require: 
       - file: configure_systemd_netbox_rq
 {%- endif %}
-    - onchanges:
+    - watch:
       - git: clone_netbox_app
       - file: configure_netbox
 

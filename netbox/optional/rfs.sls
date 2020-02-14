@@ -16,3 +16,5 @@ install_django-storages:
     - require:
       - file: configure_netbox
       - virtualenv: setup_netbox_virtualenv
+    - watch_in:
+      - service: netbox_app_service
