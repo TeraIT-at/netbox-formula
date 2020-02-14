@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- from tpldir ~ "/map.jinja" import netbox with context %}
+{%- from tpldir ~ "/../map.jinja" import netbox with context %}
 
 include:
   - ..service
