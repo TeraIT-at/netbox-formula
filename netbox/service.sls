@@ -3,6 +3,9 @@
 
 {%- from tpldir ~ "/map.jinja" import netbox with context %}
 
+include:
+  - .optional.ldap
+
 install_netbox_dependencies:
   pkg.installed:
     - pkgs:
