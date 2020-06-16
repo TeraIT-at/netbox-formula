@@ -3,9 +3,6 @@
 
 {%- from tpldir ~ "/map.jinja" import netbox with context %}
 
-include:
-  - .optional.ldap
-
 install_netbox_dependencies:
   pkg.installed:
     - pkgs:
@@ -54,17 +51,6 @@ clone_netbox_app:
       - group: create_netbox_group
       - file: create_netbox_dir
 
-setup_netbox_virtualenv:
-  virtualenv.managed:
-    - name: {{ netbox.service.homedir }}/venv/
-    - requirements: {{ netbox.service.homedir }}/app/requirements.txt
-    - user: {{ netbox.service.user }}
-    - cwd: {{ netbox.service.homedir }}/
-    - pip_upgrade: True
-    - python: python3
-    - require:
-      - git: clone_netbox_app
-
 configure_netbox:
   file.managed:
   - name: {{ netbox.service.homedir }}/app/netbox/netbox/configuration.py
@@ -78,48 +64,55 @@ configure_netbox:
   - require:
     - git: clone_netbox_app
 
+configure_netbox_local_requirements:
+  file.managed:
+  - name: {{ netbox.service.homedir }}/app/local_requirements.txt
+  - user: {{ netbox.service.user }}
+  - group: {{ netbox.service.group }}
+  - mode: 600
+  - require:
+    - git: clone_netbox_app
+
+
+{%- if netbox.service.optional.plugins is defined %}
+add_plugin_requirements:
+  file.blockreplace:
+  - name: {{ netbox.service.homedir }}/app/local_requirements.txt
+  - marker_start: "# -- plugins start -- "
+  - marker_end: "# -- plugins end --"
+  - append_if_not_found: True
+  - content: |
+      {%- for plugin in netbox.service.optional.plugins %}
+          {{ plugin }}
+      {%- endfor %}
+  - require:
+    - git: clone_netbox_app
+    - file: configure_netbox_local_requirements
+  - onchanges_in:
+      - cmd: upgrade_netbox_app
+  {% endif %}
+
+
 upgrade_netbox_app:
   cmd.run:
     - name: "./upgrade.sh"
     - cwd: {{ netbox.service.homedir }}/app
     - runas: {{ netbox.service.user }}
     - require:
+      - git: clone_netbox_app
       - file: configure_netbox
-      - virtualenv: setup_netbox_virtualenv
-    - onchanges:
-      - git: clone_netbox_app
-
-collect_static_files_netbox:
-  cmd.run:
-    - name: ". ../../venv/bin/activate && python manage.py collectstatic --no-input"
-    - cwd: {{ netbox.service.homedir }}/app/netbox/
-    - runas: {{ netbox.service.user }}
-    - onchanges:
-      - git: clone_netbox_app
 
 setup_netbox_link_graphviz_to_venv:
   file.symlink:
-    - name: {{ netbox.service.homedir }}/venv/bin/dot
+    - name: {{ netbox.service.homedir }}/app/venv/bin/dot
     - target: /usr/bin/dot
     - user: {{ netbox.service.user }}
     - group: {{ netbox.service.group }}
     - require:
         - configure_netbox
-        - setup_netbox_virtualenv
         - install_netbox_dependencies
-    
-install_gunicorn_netbox:
-  pip.installed:
-    - name: gunicorn
-    - user: {{ netbox.service.user }}
-    - cwd: {{ netbox.service.homedir }}
-    - bin_env: {{ netbox.service.homedir }}/venv
-    - ignore_installed: true
-    - require:
-      - file: configure_netbox
-      - virtualenv: setup_netbox_virtualenv
 
-{%-if netbox.service.supervisor == True %}
+{%- if netbox.service.supervisor == True %}
 configure_gunicorn_supervisor_netbox:
   file.managed:
   - name: {{ netbox.service.homedir }}/gunicorn_config.py
@@ -155,7 +148,7 @@ service_supervisor_netbox:
       - service: service_supervisor_netbox
 {%- endif %}
 
-{%-if netbox.service.systemd == True %}
+{%- if netbox.service.systemd == True %}
 configure_gunicorn_systemd_netbox:
   file.managed:
   - name: {{ netbox.service.homedir }}/gunicorn.py
@@ -191,27 +184,32 @@ configure_systemd_netbox_rq:
 {%- endif %}
 
 netbox_app_service:
-{%-if netbox.service.supervisor == True %}
+{%- if netbox.service.supervisor == True %}
   supervisord.running:
     - name: netbox
     - restart: true
 {%- endif -%}
-{%-if netbox.service.systemd == True %}
+{%- if netbox.service.systemd == True %}
   service.running:
     - name: netbox
     - enable: true
-    - require: 
+    - require:
       - file: configure_systemd_netbox_rq
 {%- endif %}
     - watch:
       - git: clone_netbox_app
       - file: configure_netbox
+      - cmd: upgrade_netbox_app
 
 netbox_rq_service:
 {%- if netbox.service.systemd == True %}
   service.running:
     - name: netbox-rq
-    - enable: true   
-    - require: 
+    - enable: true
+    - require:
       - file: configure_systemd_netbox_rq
+    - watch:
+      - git: clone_netbox_app
+      - file: configure_netbox
+      - cmd: upgrade_netbox_app
 {%- endif %}

@@ -14,19 +14,19 @@ install_redis:
     - require_in:
       - file: configure_netbox
 
-{%if netbox.redis.bind|length -%}
+{% if netbox.redis.bind|length -%}
 bind_redis:
   file.blockreplace:
-  - name: {{netbox.redis.config}}
+  - name: {{ netbox.redis.config }}
   - marker_start: "# BEGIN managed-by-salt netbox-formula"
   - marker_end: "# END managed-by-salt netbox-formula"
   - append_if_not_found: True
   - show_changes: True
   - backup: ".bak"
-  - content: "bind {{netbox.redis.bind}}"
+  - content: "bind {{ netbox.redis.bind }}"
   - watch_in:
     - service: service_redis_running
-{%-endif %}
+{%- endif %}
 
 service_redis_running:
     service.running:

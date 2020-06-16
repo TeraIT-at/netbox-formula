@@ -1,0 +1,78 @@
+---
+driver:
+  name: docker
+  hostname: salt-formula.ci.local
+  use_sudo: false
+  privileged: true
+  run_command: /lib/systemd/systemd
+
+verifier:
+  # https://www.inspec.io/
+  name: inspec
+  sudo: true
+  # cli, documentation, html, progress, json, json-min, json-rspec, junit
+  reporter:
+    - cli
+
+platforms:
+  - name: debian-10-3000-3-py3
+    driver:
+      image: saltimages/salt-3000.3-py3:debian-10
+  - name: ubuntu-1804-3000-3-py3
+    driver:
+      image: saltimages/salt-3000.3-py3:ubuntu-18.04
+
+provisioner:
+  name: salt_solo
+  log_level: debug
+  salt_install: none
+  require_chef: false
+  salt_copy_filter:
+    - .kitchen
+    - .git
+  formula: netbox
+
+suites:
+  - name: netbox_service_apache
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - netbox.db
+            - netbox.redis
+            - netbox.service
+            - netbox.www.apache
+            - netbox.optional.napalm
+            - netbox.optional.rfs
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - netbox
+      pillars_from_files:
+        netbox.sls: test/salt/default/pillar/netbox.sls
+    verifier:
+      inspec_tests:
+        - path: test/integration/default
+  - name: netbox_service_nginx
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - netbox.db
+            - netbox.redis
+            - netbox.service
+            - netbox.www.nginx
+            - netbox.optional.napalm
+            - netbox.optional.rfs
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - netbox
+      pillars_from_files:
+        netbox.sls: test/salt/default/pillar/netbox.sls
+    verifier:
+      inspec_tests:
+        - path: test/integration/default
+        

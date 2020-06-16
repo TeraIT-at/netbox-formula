@@ -39,7 +39,7 @@ netbox_enable_apache_modules:
       {% endfor %}
     - watch_in:
       - service: netbox_service_apache_running
-    - require: 
+    - require:
       - pkg: netbox_install_apache
       - pkg: netbox_install_apache_modules
 
