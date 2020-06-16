@@ -7,17 +7,32 @@
 include:
   - ..service
 
-{%-if netbox.service.optional.ldap.enabled == True %}
-install_django_ldap_netbox:
-  pip.installed:
-    - name: django-auth-ldap
-    - user: {{ netbox.service.user }}
-    - cwd: {{ netbox.service.homedir }}
-    - bin_env: {{ netbox.service.homedir }}/venv
-    - ignore_installed: true
+install_ldap_dependencies:
+  pkg.installed:
+    - pkgs:
+      {% for pkg in netbox.optional.ldap.package_dependencies -%}
+      - {{ pkg }}
+      {% endfor %}
     - require:
-      - file: configure_netbox
-      - virtualenv: setup_netbox_virtualenv
+      - git: clone_netbox_app
+      - file: configure_netbox_local_requirements
+
+add_django_ldap_requirement:
+  file.blockreplace:
+  - name: {{ netbox.service.homedir }}/app/local_requirements.txt
+  - marker_start: "# -- ldap start -- "
+  - marker_end: "# -- ldap end --"
+  - append_if_not_found: True
+  - content: |
+      {% for pkg in netbox.optional.ldap.python_dependencies -%}
+          - {{ pkg }}
+      {% endfor %}
+  - require:
+    - git: clone_netbox_app
+    - file: configure_netbox_local_requirements
+    - pkg: install_ldap_dependencies
+  - onchanges_in:
+      - cmd: upgrade_netbox_app
 
 configure_netbox_ldap:
   file.managed:
@@ -33,4 +48,3 @@ configure_netbox_ldap:
     - git: clone_netbox_app
   - watch_in:
       - service: netbox_app_service
-{%- endif %}

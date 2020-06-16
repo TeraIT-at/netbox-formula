@@ -10,6 +10,7 @@ latest_netbox_app:
   git.latest:
     - name: {{ netbox.repository.url }}
     - branch: {{ netbox.repository.branch }}
+    - rev: {{ netbox.repository.branch }}
     - target: {{ netbox.service.homedir }}/app
     - user: {{ netbox.service.user }}
     - force_clone: true

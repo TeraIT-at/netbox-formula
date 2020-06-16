@@ -1,0 +1,9 @@
+name: netbox
+os: Debian, Ubuntu
+os_family: Debian
+version: 0.8
+release: 1
+minimum_version: 2017.3
+summary: netbox formula
+description: Formula to use to install and configure netbox
+top_level_dir: netbox

@@ -13,7 +13,7 @@ Group={{ netbox.service.group }}
 
 WorkingDirectory={{ netbox.service.homedir }}/app
 
-ExecStart={{ netbox.service.homedir }}/venv/bin/python3 {{ netbox.service.homedir }}/app/netbox/manage.py rqworker
+ExecStart={{ netbox.service.homedir }}/app/venv/bin/python3 {{ netbox.service.homedir }}/app/netbox/manage.py rqworker
 
 Restart=on-failure
 RestartSec=30

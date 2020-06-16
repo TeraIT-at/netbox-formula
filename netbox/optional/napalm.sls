@@ -6,15 +6,15 @@
 include:
   - ..service
 
-install_napalm:
-  pip.installed:
-    - name: napalm
-    - user: {{ netbox.service.user }}
-    - cwd: {{ netbox.service.homedir }}
-    - bin_env: {{ netbox.service.homedir }}/venv
-    - ignore_installed: true
-    - require:
-      - file: configure_netbox
-      - virtualenv: setup_netbox_virtualenv
-    - watch_in:
-      - service: netbox_app_service
+add_napalm_requirement:
+  file.blockreplace:
+  - name: {{ netbox.service.homedir }}/app/local_requirements.txt
+  - marker_start: "# -- napalm start -- "
+  - marker_end: "# -- napalm end --"
+  - append_if_not_found: True
+  - content: "napalm"
+  - require:
+    - git: clone_netbox_app
+    - file: configure_netbox_local_requirements
+  - onchanges_in:
+      - cmd: upgrade_netbox_app
