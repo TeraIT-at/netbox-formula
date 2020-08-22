@@ -25,7 +25,7 @@ add_django_ldap_requirement:
   - append_if_not_found: True
   - content: |
       {% for pkg in netbox.optional.ldap.python_dependencies -%}
-          - {{ pkg }}
+          {{ pkg }}
       {% endfor %}
   - require:
     - git: clone_netbox_app
