@@ -98,6 +98,8 @@ upgrade_netbox_app:
     - name: "./upgrade.sh"
     - cwd: {{ netbox.service.homedir }}/app
     - runas: {{ netbox.service.user }}
+    - env:
+      - PYTHON: {{ netbox.service.PYTHON_ENV }}
     - require:
       - git: clone_netbox_app
       - file: configure_netbox

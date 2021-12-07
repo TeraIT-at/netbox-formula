@@ -11,6 +11,8 @@ netbox:
     group: app-netbox
     user: app-netbox
     homedir: /opt/netbox/
+    #Use at least the latest required version for netbox
+    PYTHON_ENV: python3
     # use either systemd or supervisor
     # (switching afterwards may cause problems)
     systemd: true
