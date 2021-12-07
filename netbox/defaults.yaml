@@ -7,6 +7,7 @@ netbox:
     group: app-netbox
     user: app-netbox
     homedir: /opt/netbox/
+    PYTHON_ENV: python3
     systemd: True
     supervisor: False
     gunicorn:
