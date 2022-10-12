@@ -2,7 +2,7 @@
 # vim: ft=sls
 
 {% set tplroot = tpldir.split('/')[0] if not salt.pillar.get('netbox:tplroot_overwrite', False) else salt.pillar.get('netbox:tplroot_overwrite', False) %}
-{%- from tpldir ~ "/../map.jinja" import netbox with context %}
+{%- from tplroot ~ "/map.jinja" import netbox with context %}
 
 include:
   - ..service

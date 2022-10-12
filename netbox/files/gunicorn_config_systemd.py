@@ -1,4 +1,6 @@
-{% from tpldir ~ "/map.jinja" import netbox with context %}
+{% set tplroot = tpldir.split('/')[0] if not salt.pillar.get('netbox:tplroot_overwrite', False) else salt.pillar.get('netbox:tplroot_overwrite', False) %}
+{%- from tplroot ~ "/map.jinja" import netbox with context %}
+
 bind = '{{ netbox.service.gunicorn.bind }}'
 workers = {{ netbox.service.gunicorn.workers }}
 user = '{{ netbox.service.user }}'
