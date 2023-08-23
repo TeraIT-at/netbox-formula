@@ -10,3 +10,5 @@ command = python3  {{ netbox.service.homedir }}/app/netbox/manage.py rqworker
 directory = {{ netbox.service.homedir }}/app/netbox/
 environment=PATH="{{ netbox.service.homedir }}/app/venv/bin"
 user = {{ netbox.service.user }}
+
+{{ netbox.custom_config.supervisor if netbox.custom_config.supervisor }}

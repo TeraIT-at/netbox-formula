@@ -131,4 +131,8 @@ netbox:
   repository:
     url: https://github.com/netbox-community/netbox.git
     branch: master
+  custom_config:
+    supervisor: None
+    gunicorn_supervisor: None
+    gunicorn_systemd: None
   tplroot_overwrite: None
