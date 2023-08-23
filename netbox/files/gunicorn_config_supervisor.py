@@ -9,3 +9,4 @@ user = '{{ netbox.service.user }}'
 threads = '{{ netbox.service.gunicorn.threads }}'
 max_requests = {{ netbox.service.gunicorn.max_requests }}
 max_requests_jitter = {{ netbox.service.gunicorn.max_requests_jitter }}
+{{ netbox.custom_config.gunicorn_supervisor if netbox.custom_config.gunicorn_supervisor }}
