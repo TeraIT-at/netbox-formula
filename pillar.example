@@ -141,7 +141,7 @@ netbox:
       my_custom_config = 1
     gunicorn_supervisor: |
       my_custom_config = 1
-    gunicorn_systemd: 
+    gunicorn_systemd: |
       my_custom_config = 1
   #Used to overwrite the default root if formula is not in root directory
   #tplroot_overwrite: None
